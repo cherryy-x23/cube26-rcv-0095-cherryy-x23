@@ -1,0 +1,108 @@
+{
+  "": "SYNTHETIC EXAMPLE ONLY - NOT A REAL AI OR PRODUCTION INSPECTION RESULT",
+  "record_id": "RCV-0005",
+  "unit_id": "UNIT-0005",
+  "org_id": "org_demo_alpha",
+  "operator_id": "op_eli",
+  "captured_at": "2026-06-09T07:54:00Z",
+  "po_header": {
+    "po_number": "PO-7001",
+    "po_line": 2,
+    "supplier": "Supplier Coastal (DUMMY)"
+  },
+  "expected_values": {
+    "sku": "SKU-LEASH-6FT",
+    "asin": "B0DUMMY205",
+    "product_title": "Nylon Dog Leash",
+    "expected_colour": "red",
+    "expected_variant": "6ft",
+    "expected_components": [
+      "leash"
+    ],
+    "cartons_ordered": 1,
+    "units_per_carton_ordered": 24,
+    "quantity_ordered": 24
+  },
+  "observed_values": {
+    "ocr_text": "SKU-LEASH-6FT RED NYLON LEASH 6FT LOT#9842",
+    "identified_sku": "SKU-LEASH-6FT",
+    "barcode": "X001DUMMY205",
+    "cartons_counted": 1,
+    "units_per_carton_counted": 22,
+    "quantity_counted": 22,
+    "carton_damage": "none",
+    "unit_damage": "none",
+    "observed_colour": "red",
+    "observed_variant": "6ft",
+    "observed_components": [
+      "leash"
+    ],
+    "image_clarity": 0.94
+  },
+  "individual_checks": {
+    "identity_check": {
+      "verdict": "PASS",
+      "reason": "Observed SKU 'SKU-LEASH-6FT' and barcode 'X001DUMMY205' match PO line item.",
+      "confidence": 0.98
+    },
+    "quantity_check": {
+      "verdict": "FAIL",
+      "discrepancy": -2,
+      "reason": "Short shipment: Expected 24 units (1 carton x 24 units/carton), but observed 22 units (1 carton x 22 units/carton). Discrepancy is -2 units."
+    },
+    "carton_condition_check": {
+      "verdict": "PASS",
+      "damage_type": "none",
+      "reason": "No crushing, puncture, or water damage detected on master carton."
+    },
+    "unit_condition_check": {
+      "verdict": "PASS",
+      "damage_type": "none",
+      "reason": "No tears, crushing, or water damage detected on retail packaging."
+    },
+    "specification_check": {
+      "verdict": "PASS",
+      "flagged_issues": [],
+      "reason": "Observed colour ('red'), variant ('6ft'), and components ('leash') match contract specifications."
+    }
+  },
+  "final_verdict": "FAIL",
+  "verdict_reason": "Shipment failed deterministic verification due to short quantity (-2 units). All other identity and condition checks passed.",
+  "evidence_references": [
+    {
+      "view_type": "carton",
+      "photo_reference": "fixtures/receiving/UNIT-0005_carton.jpg",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bounding_boxes": [
+        {
+          "label": "master_carton_label",
+          "box_2d": [
+            0.12,
+            0.15,
+            0.45,
+            0.62
+          ],
+          "confidence": 0.95
+        }
+      ]
+    },
+    {
+      "view_type": "unit",
+      "photo_reference": "fixtures/receiving/UNIT-0005_unit.jpg",
+      "sha256": "4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a",
+      "bounding_boxes": [
+        {
+          "label": "open_carton_contents_count_grid",
+          "box_2d": [
+            0.08,
+            0.1,
+            0.92,
+            0.88
+          ],
+          "confidence": 0.91
+        }
+      ]
+    }
+  ],
+  "operator_override": null
+}

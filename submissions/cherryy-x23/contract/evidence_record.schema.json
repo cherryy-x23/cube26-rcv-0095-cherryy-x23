@@ -1,0 +1,488 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cube-buildathon.org/schemas/rcv/evidence_record.schema.json",
+  "title": "EvidenceRecord",
+  "description": "Standard evidence record emitted by 01 Receiving Manager for downstream pods (Prep, Pack, Returns, Recovery).",
+  "type": "object",
+  "required": [
+    "record_id",
+    "unit_id",
+    "org_id",
+    "operator_id",
+    "captured_at",
+    "po_header",
+    "expected_values",
+    "observed_values",
+    "individual_checks",
+    "final_verdict",
+    "verdict_reason",
+    "evidence_references"
+  ],
+  "properties": {
+    "$comment": {
+      "type": "string",
+      "description": "Optional comment or synthetic annotation marker"
+    },
+    "record_id": {
+      "type": "string",
+      "pattern": "^RCV-[A-Za-z0-9_-]{4,20}$",
+      "description": "Receiving stage record ID with RCV prefix (e.g. RCV-0001)."
+    },
+    "unit_id": {
+      "type": "string",
+      "pattern": "^(UNIT|DEMO)-[A-Za-z0-9_-]{4,20}$",
+      "description": "Global join key across all 5 CUBE manager pods (UNIT-0001 through UNIT-0100)."
+    },
+    "org_id": {
+      "type": "string",
+      "description": "Tenant identifier for Row-Level Security isolation (e.g. org_demo_alpha)."
+    },
+    "operator_id": {
+      "type": "string",
+      "description": "Identifier of the receiving operator at the inbound dock."
+    },
+    "captured_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "UTC timestamp when the physical receiving inspection was performed."
+    },
+    "po_header": {
+      "type": "object",
+      "required": [
+        "po_number",
+        "po_line",
+        "supplier"
+      ],
+      "properties": {
+        "po_number": {
+          "type": "string"
+        },
+        "po_line": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "supplier": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "expected_values": {
+      "type": "object",
+      "required": [
+        "sku",
+        "asin",
+        "product_title",
+        "expected_colour",
+        "expected_variant",
+        "expected_components",
+        "cartons_ordered",
+        "units_per_carton_ordered",
+        "quantity_ordered"
+      ],
+      "properties": {
+        "sku": {
+          "type": "string"
+        },
+        "asin": {
+          "type": "string"
+        },
+        "product_title": {
+          "type": "string"
+        },
+        "expected_colour": {
+          "type": "string"
+        },
+        "expected_variant": {
+          "type": "string"
+        },
+        "expected_components": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "cartons_ordered": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "units_per_carton_ordered": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "quantity_ordered": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false
+    },
+    "observed_values": {
+      "type": "object",
+      "required": [
+        "carton_damage",
+        "unit_damage"
+      ],
+      "properties": {
+        "ocr_text": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "identified_sku": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "barcode": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "cartons_counted": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "units_per_carton_counted": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "quantity_counted": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "carton_damage": {
+          "type": "string",
+          "enum": [
+            "none",
+            "crushing",
+            "water",
+            "tears",
+            "uncertain"
+          ]
+        },
+        "unit_damage": {
+          "type": "string",
+          "enum": [
+            "none",
+            "crushing",
+            "water",
+            "tears",
+            "uncertain"
+          ]
+        },
+        "observed_colour": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "observed_variant": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "observed_components": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "string"
+          }
+        },
+        "image_clarity": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0.0,
+          "maximum": 1.0
+        }
+      },
+      "additionalProperties": false
+    },
+    "individual_checks": {
+      "type": "object",
+      "required": [
+        "identity_check",
+        "quantity_check",
+        "carton_condition_check",
+        "unit_condition_check",
+        "specification_check"
+      ],
+      "properties": {
+        "identity_check": {
+          "type": "object",
+          "required": [
+            "verdict",
+            "reason"
+          ],
+          "properties": {
+            "verdict": {
+              "type": "string",
+              "enum": [
+                "PASS",
+                "FAIL",
+                "UNCERTAIN"
+              ]
+            },
+            "reason": {
+              "type": "string"
+            },
+            "confidence": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0.0,
+              "maximum": 1.0
+            }
+          },
+          "additionalProperties": false
+        },
+        "quantity_check": {
+          "type": "object",
+          "required": [
+            "verdict",
+            "reason"
+          ],
+          "properties": {
+            "verdict": {
+              "type": "string",
+              "enum": [
+                "PASS",
+                "FAIL",
+                "UNCERTAIN"
+              ]
+            },
+            "discrepancy": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "reason": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "carton_condition_check": {
+          "type": "object",
+          "required": [
+            "verdict",
+            "damage_type",
+            "reason"
+          ],
+          "properties": {
+            "verdict": {
+              "type": "string",
+              "enum": [
+                "PASS",
+                "FAIL",
+                "UNCERTAIN"
+              ]
+            },
+            "damage_type": {
+              "type": "string"
+            },
+            "reason": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "unit_condition_check": {
+          "type": "object",
+          "required": [
+            "verdict",
+            "damage_type",
+            "reason"
+          ],
+          "properties": {
+            "verdict": {
+              "type": "string",
+              "enum": [
+                "PASS",
+                "FAIL",
+                "UNCERTAIN"
+              ]
+            },
+            "damage_type": {
+              "type": "string"
+            },
+            "reason": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "specification_check": {
+          "type": "object",
+          "required": [
+            "verdict",
+            "flagged_issues",
+            "reason"
+          ],
+          "properties": {
+            "verdict": {
+              "type": "string",
+              "enum": [
+                "PASS",
+                "FAIL",
+                "UNCERTAIN"
+              ]
+            },
+            "flagged_issues": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "reason": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "final_verdict": {
+      "type": "string",
+      "enum": [
+        "PASS",
+        "FAIL",
+        "UNCERTAIN",
+        "PENDING_REVIEW"
+      ],
+      "description": "Overall outcome produced by deterministic comparison logic or triage."
+    },
+    "verdict_reason": {
+      "type": "string",
+      "description": "Human-readable synthesis explaining the verdict."
+    },
+    "evidence_references": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "view_type",
+          "photo_reference",
+          "sha256"
+        ],
+        "properties": {
+          "view_type": {
+            "type": "string",
+            "enum": [
+              "pallet",
+              "carton",
+              "unit",
+              "barcode",
+              "label",
+              "overview"
+            ]
+          },
+          "photo_reference": {
+            "type": "string"
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "bounding_boxes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "label",
+                "box_2d"
+              ],
+              "properties": {
+                "label": {
+                  "type": "string"
+                },
+                "box_2d": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  },
+                  "minItems": 4,
+                  "maxItems": 4,
+                  "description": "[ymin, xmin, ymax, xmax] normalized between 0.0 and 1.0"
+                },
+                "confidence": {
+                  "type": "number",
+                  "minimum": 0.0,
+                  "maximum": 1.0
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "operator_override": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "original_verdict": {
+          "type": "string",
+          "enum": [
+            "PASS",
+            "FAIL",
+            "UNCERTAIN",
+            "PENDING_REVIEW"
+          ]
+        },
+        "override_verdict": {
+          "type": "string",
+          "enum": [
+            "PASS",
+            "FAIL",
+            "UNCERTAIN",
+            "PENDING_REVIEW"
+          ]
+        },
+        "operator_id": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "original_verdict",
+        "override_verdict",
+        "operator_id",
+        "reason",
+        "timestamp"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

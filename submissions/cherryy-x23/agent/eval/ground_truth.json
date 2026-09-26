@@ -1,0 +1,72 @@
+{
+  "$schema": "https://cube-buildathon.org/schemas/rcv/evaluation_ground_truth.schema.json",
+  "$comment": "REAL INDEPENDENT TWO-LABELER ANNOTATIONS ARE REQUIRED BEFORE OFFICIAL METRICS CAN BE PRODUCED. ZERO FABRICATED DATA.",
+  "dataset_status": "not_ready",
+  "annotation_status": "pending_dual_labeling",
+  "description": "Ground truth annotations for the 50-unit held-out receiving evaluation dataset. Cases remain unpopulated until real two-labeler human evaluations are captured.",
+  "case_template_spec": {
+    "case_id": "EVAL-0001",
+    "unit_id": "UNIT-E001",
+    "expected_values": {
+      "sku": "SKU-TOWEL-BLU",
+      "asin": "B0DUMMY600",
+      "product_title": "Cotton Bath Towel",
+      "expected_colour": "blue",
+      "expected_variant": "bath",
+      "expected_components": [
+        "towel"
+      ],
+      "cartons_ordered": 2,
+      "units_per_carton_ordered": 12,
+      "quantity_ordered": 24
+    },
+    "photo_references": {
+      "pallet": "fixtures/UNIT-E001/pallet.jpg",
+      "carton": "fixtures/UNIT-E001/carton.jpg",
+      "unit": "fixtures/UNIT-E001/unit.jpg",
+      "barcode": "fixtures/UNIT-E001/barcode.jpg"
+    },
+    "ground_truth": {
+      "identity": {
+        "annotator_a": "PASS | FAIL | UNCERTAIN",
+        "annotator_b": "PASS | FAIL | UNCERTAIN",
+        "adjudicated_label": "PASS | FAIL | UNCERTAIN",
+        "adjudication_reason": "string or null"
+      },
+      "quantity": {
+        "annotator_a": "PASS | FAIL | UNCERTAIN",
+        "annotator_b": "PASS | FAIL | UNCERTAIN",
+        "adjudicated_label": "PASS | FAIL | UNCERTAIN",
+        "cartons_received": "integer or null",
+        "units_per_carton": "integer or null",
+        "qty_received": "integer or null",
+        "adjudication_reason": "string or null"
+      },
+      "carton_damage": {
+        "annotator_a": "none | crushing | water | tears | uncertain",
+        "annotator_b": "none | crushing | water | tears | uncertain",
+        "adjudicated_label": "none | crushing | water | tears | uncertain",
+        "adjudication_reason": "string or null"
+      },
+      "unit_damage": {
+        "annotator_a": "none | crushing | water | tears | uncertain",
+        "annotator_b": "none | crushing | water | tears | uncertain",
+        "adjudicated_label": "none | crushing | water | tears | uncertain",
+        "adjudication_reason": "string or null"
+      },
+      "quality_flags": {
+        "annotator_a": [
+          "wrong_colour",
+          "wrong_variant",
+          "missing_components",
+          "obvious_defect"
+        ],
+        "annotator_b": [],
+        "adjudicated_label": [],
+        "adjudication_reason": "string or null"
+      }
+    },
+    "named_failure_mode": "FM-01 | FM-02 | FM-03 | FM-04 | FM-05 | null"
+  },
+  "cases": []
+}
